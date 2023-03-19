@@ -1,53 +1,131 @@
 package com.badpetrovich.spring.spring_pet.controller;
 
-import com.badpetrovich.spring.spring_pet.entity.Employee;
-import com.badpetrovich.spring.spring_pet.service.EmployeeService;
+import com.badpetrovich.spring.spring_pet.entity.Client;
+import com.badpetrovich.spring.spring_pet.entity.Section;
+import com.badpetrovich.spring.spring_pet.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class RESTController {
 
     @Autowired
-    private EmployeeService employeeService;
+    private ManagerService managerService;
 
-    @GetMapping("/employees")
-    public List<Employee> showAllEmployees(){
-        List<Employee> allEmployees = employeeService.getAllEmployees();
-        return allEmployees;
+    @GetMapping("clients")
+    public List<Client> showAllClients(){
+        List<Client> allClients = managerService.getAllClients();
+        return allClients;
     }
 
-    @GetMapping("/employees/{id}")
-    public Employee getEmployee (@PathVariable int id){
-        Employee employee = employeeService.getEmployee(id);
-
-        return employee;
-    }
-    @PostMapping("/employees")
-    public Employee addNewEmployee(@RequestBody Employee employee){
-        employeeService.saveEmployee(employee);
-        return employee;
+    @GetMapping("sections")
+    public List<Section> showAllSections(){
+        List<Section> allSections = managerService.getAllSections();
+        return allSections;
     }
 
-    @PutMapping("/employees")
-    public Employee updateEmployee(@RequestBody Employee employee){
-        employeeService.saveEmployee(employee);
-        return employee;
+    @GetMapping("clients/{id}")
+    public Client getClient (@PathVariable int id){
+        Client client = managerService.getClient(id);
+
+        return client;
     }
 
-    @DeleteMapping("/employees/{id}")
-    public String deleteEmployee(@PathVariable int id){
-        employeeService.deleteEmployee(id);
-        return "Employee with ID = " + id + " was deleted";
+    @GetMapping("sections/{id}")
+    public Section getSection (@PathVariable int id){
+        Section section = managerService.getSection(id);
+
+        return section;
     }
 
-    @GetMapping("/employees/name/{name}")
-    public List<Employee> showAllEmployeesByName(@PathVariable String name){
-        List<Employee> employees = employeeService.findAllByName(name);
-        return employees;
+    @PostMapping("clients/{id}")
+    public void saveAllSectionsToClient (@PathVariable int id){
+
+        managerService.addAllSectionsToClient(id);
+
+    }
+
+    @PostMapping("sections/{id}")
+    public void saveAllClientsToSection (@PathVariable int id){
+
+        managerService.addAllClientsToSection(id);
+
+    }
+
+    @PostMapping("clients/{idSection}/{idClient}")
+    public void saveSectionToToClient (@PathVariable int idSection, @PathVariable int idClient){
+
+        managerService.addSectionToClient(idSection, idClient);
+
+    }
+
+    @PostMapping("sections/{idClient}/{idSection}")
+    public void saveClientToToSection(@PathVariable int idClient, @PathVariable int idSection){
+
+        managerService.addClientToSection(idClient, idSection);
+
+    }
+
+    @PostMapping("clients")
+    public Client addNewClient(@RequestBody Client client){
+        managerService.saveClient(client);
+        return client;
+    }
+
+    @PostMapping("sections")
+    public Section addNewSection(@RequestBody Section section){
+        managerService.saveSection(section);
+        return section;
+    }
+
+    @PutMapping("clients")
+    public Client updateClient(@RequestBody Client client){
+        managerService.saveClient(client);
+        return client;
+    }
+
+    @PutMapping("sections")
+    public Section updateSection(@RequestBody Section section){
+        managerService.saveSection(section);
+        return section;
+    }
+
+    @DeleteMapping("clients/{id}")
+    public String deleteClient(@PathVariable int id){
+        managerService.deleteClient(id);
+        return "Client with ID = " + id + " was deleted";
+    }
+
+
+    @DeleteMapping("sections/{id}")
+    public String deleteSection(@PathVariable int id){
+        managerService.deleteSection(id);
+        return "Section with ID = " + id + " was deleted";
+    }
+
+    @GetMapping("clients/name/{name}")
+    public List<Client> showAllClientsByName(@PathVariable String name){
+        List<Client> clients = managerService.findAllByName(name);
+        return clients;
+    }
+
+    @GetMapping("clients/section/{section}")
+    public List<Section> showCurrentSection(@PathVariable String section){
+
+        List<Section> sections = managerService.findAllBySection(section);
+        return sections;
+
+    }
+
+    @GetMapping("clients/status/{status}")
+    public List<Client> showCurrentStatus(@PathVariable String status){
+
+        List<Client> statuses = managerService.findAllByStatus(status);
+        return statuses;
+
     }
 
 
